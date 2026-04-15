@@ -1508,8 +1508,12 @@ section { padding: 5rem 1.5rem; position: relative; }
   // Scroll animations
   const obs = new IntersectionObserver(entries => {
     entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
-  }, { threshold: 0.12 });
-  document.querySelectorAll('.anim').forEach(el => obs.observe(el));
+  }, { threshold: 0 });
+  document.querySelectorAll('.anim').forEach(el => {
+    const r = el.getBoundingClientRect();
+    if (r.top < window.innerHeight + 100) el.classList.add('visible');
+    else obs.observe(el);
+  });
 
   // Sticky bar
   const bar = document.getElementById('stickyBar');
